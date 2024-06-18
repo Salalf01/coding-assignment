@@ -28,8 +28,8 @@ const Movie = ({ movie }) => {
         if (!videoKey) setOpen(true)
         const URL = `${ENDPOINT}/movie/${id}?api_key=${API_KEY}&append_to_response=videos`
 
-        const videoData = await fetch(URL)
-            .then((response) => response.json());
+        const videoData = await (await fetch(URL)).json();
+
 
 
         if (videoData.videos && videoData.videos.results.length) {
@@ -38,7 +38,7 @@ const Movie = ({ movie }) => {
         } else {
             setDisableVideoButton(true);
         }
-    }
+    };
 
 
     const onStarMovie = () => {
@@ -66,7 +66,7 @@ const Movie = ({ movie }) => {
 
 
     return (
-        <div className="wrapper">
+        <div className="wrapper" data-testid="movie-card">
             <div className="card" onClick={(e) => e.currentTarget.classList.add('opened')} >
                 <div className="card-body text-center">
                     <div className="overlay" />

@@ -1,5 +1,7 @@
 import starredSlice from '../data/starredSlice'
-import { moviesMock } from './movies.mocks'
+import { intersectionObserverMock, moviesMock } from './movies.mocks'
+
+window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
 
 describe('starredSlice test', () => {
 

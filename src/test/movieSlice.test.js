@@ -1,5 +1,6 @@
 import moviesSlice, { fetchMovies } from '../data/moviesSlice'
 import { moviesMock } from './movies.mocks'
+import './intersectionObserverMock.mocks';
 
 describe('MovieSlice test', () => {
     

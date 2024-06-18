@@ -6,7 +6,6 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
     z-index: 1000;
-    /* Ensure it's on top */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -39,5 +38,4 @@
 
 .lightbox-content video {
     max-height: 80vh;
-    /* Prevent video from exceeding screen height */
 }
