@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from "./test/utils"
 import App from './App';
 import './test/intersectionObserverMock.mocks';
+import { mockedResults } from './test/movies.mocks';
 
 
 
@@ -14,7 +15,15 @@ it('renders watch later link', () => {
 })
 
 it('search for movies', async () => {
-  renderWithProviders(<App />)
+  renderWithProviders(<App />, {
+    preloadedState:
+    {
+      movies: {
+        movies: mockedResults,
+        fetchStatus: "success"
+      }
+    }
+  })
 
   await userEvent.type(screen.getByTestId('search-movies'), 'forrest gump')
   await waitFor(() => {

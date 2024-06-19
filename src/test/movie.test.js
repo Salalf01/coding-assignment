@@ -3,9 +3,19 @@ import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from './utils'
 import App from '../App'
 import './intersectionObserverMock.mocks';
+import { mockedResults } from './movies.mocks';
+
 
 it('movies starred and saved to watch later', async () => {
-  renderWithProviders(<App />)
+  renderWithProviders(<App />, {
+    preloadedState:
+    {
+      movies: {
+        movies: mockedResults,
+        fetchStatus: "success"
+      }
+    }
+  });
 
   await userEvent.type(screen.getByTestId('search-movies'), 'forrest gump')
   await waitFor(() => {
