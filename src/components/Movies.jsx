@@ -10,6 +10,7 @@ const Movies = ({ viewTrailer, closeCard }) => {
     const state = useSelector((state) => state)
     const { movies } = state;
     const loaderRef = useRef();
+    const moviesRef = useRef(null);
     const [searchParams] = useSearchParams();
     const [items, setItems] = useState([]);
     const [isLoading, setLoading] = useState(false);
@@ -27,9 +28,13 @@ const Movies = ({ viewTrailer, closeCard }) => {
     }, []);
 
     useEffect(() => {
+        moviesRef.current.scrollIntoView(true);
+    }, [searchParam]);
+
+    useEffect(() => {
         if (moviesResults?.length > 0) {
             setLoading(false);
-            if (currentParam === searchParam) {
+            if ((currentParam === searchParam)) {
                 setItems((prev) => {
                     const mergedUniqueById = [
                         ...new Map([...prev, ...moviesResults].map((item) => [item["id"], item])).values(),
@@ -38,11 +43,11 @@ const Movies = ({ viewTrailer, closeCard }) => {
                 });
             }
             else {
-                setItems(() => [...moviesResults]);
+                setItems([...moviesResults]);
+                setCurrentParam(searchParam);
             }
-            setCurrentParam(searchParam);
         }
-    }, [movies, currentParam, searchParam]);
+    }, [moviesResults]);
 
 
     useEffect(() => {
@@ -54,7 +59,7 @@ const Movies = ({ viewTrailer, closeCard }) => {
                     if (totalResults > items.length) {
                         getMovies(searchParam, movies?.movies?.page + 1);
                     }
-                }, 1000);
+                }, 500);
             }
         });
 
@@ -66,6 +71,7 @@ const Movies = ({ viewTrailer, closeCard }) => {
             if (loaderRef.current) {
                 observer.unobserve(loaderRef.current);
             }
+            
         };
     }, [getMovies, movies, isLoading, totalResults, items]);
 
@@ -73,8 +79,8 @@ const Movies = ({ viewTrailer, closeCard }) => {
 
 
     return (
-        <div data-testid="movies">
-            <div className="cards-list">
+        <div data-testid="movies" ref={moviesRef} >
+            <div className="cards-list" >
                 {items.map((movie) => {
                     return (
                         <Movie

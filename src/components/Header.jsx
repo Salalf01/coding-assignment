@@ -10,9 +10,14 @@ const Header = ({ searchMovies }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchText, setSearchText] = useState('');
   const searchParam = searchParams.get('search');
-  useEffect(() => {
-    searchMovies(searchText, setSearchParams);
 
+  
+  useEffect(() => {
+    const timeoutData = setTimeout(() => {
+      searchMovies(searchText, setSearchParams);
+    }, 500);
+
+    return () => clearTimeout(timeoutData);
   }, [searchText]);
 
   useEffect(() => {
