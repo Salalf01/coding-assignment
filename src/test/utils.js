@@ -30,5 +30,5 @@ export function renderWithProviders(
     return <Provider store={store}><BrowserRouter>{children}</BrowserRouter></Provider>;
   }
 
-  return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
+  return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions })};
 }

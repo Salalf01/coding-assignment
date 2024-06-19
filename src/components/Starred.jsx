@@ -9,13 +9,14 @@ const Starred = ({viewTrailer}) => {
     const state = useSelector((state) => state)
     const { starred } = state
     const { clearAllStarred } = starredSlice.actions
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
   return (
     <div className="starred" data-testid="starred">
       {starred.starredMovies.length > 0 && (<div data-testid="starred-movies" className="starred-movies">
         <h6 className="header">Starred movies</h6>
         <div className="row">
+          <div className='cards-list'>
         {starred.starredMovies.map((movie) => (
           <Movie 
             movie={movie} 
@@ -23,6 +24,7 @@ const Starred = ({viewTrailer}) => {
             viewTrailer={viewTrailer}
           />
         ))}
+        </div>
         </div>
 
         <footer className="text-center">

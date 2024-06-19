@@ -1,24 +1,42 @@
-import { Link, NavLink } from "react-router-dom"
+import { NavLink, useSearchParams } from "react-router-dom"
 import { useSelector } from 'react-redux'
 
 import '../styles/header.scss'
+import { useEffect, useState } from "react"
 
 const Header = ({ searchMovies }) => {
-  
-  const { starredMovies } = useSelector((state) => state.starred)
 
+  const { starredMovies } = useSelector((state) => state.starred)
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchText, setSearchText] = useState('');
+  const searchParam = searchParams.get('search');
+
+  
+  useEffect(() => {
+    const timeoutData = setTimeout(() => {
+      searchMovies(searchText, setSearchParams);
+    }, 500);
+
+    return () => clearTimeout(timeoutData);
+  }, [searchText]);
+
+  useEffect(() => {
+    if (!searchText && searchParam) {
+      setSearchText(searchParam);
+    }
+  }, [])
   return (
     <header>
-      <Link to="/" data-testid="home" onClick={() => searchMovies('')}>
+      <NavLink to="/" data-testid="home">
         <i className="bi bi-film" />
-      </Link>
+      </NavLink>
 
       <nav>
         <NavLink to="/starred" data-testid="nav-starred" className="nav-starred">
           {starredMovies.length > 0 ? (
             <>
-            <i className="bi bi-star-fill bi-star-fill-white" />
-            <sup className="star-number">{starredMovies.length}</sup>
+              <i className="bi bi-star-fill bi-star-fill-white" />
+              <sup className="star-number">{starredMovies.length}</sup>
             </>
           ) : (
             <i className="bi bi-star" />
@@ -30,16 +48,15 @@ const Header = ({ searchMovies }) => {
       </nav>
 
       <div className="input-group rounded">
-        <Link to="/" onClick={(e) => searchMovies('')} className="search-link" >
-          <input type="search" data-testid="search-movies"
-            onKeyUp={(e) => searchMovies(e.target.value)} 
-            className="form-control rounded" 
-            placeholder="Search movies..." 
-            aria-label="Search movies" 
-            aria-describedby="search-addon" 
-            />
-        </Link>            
-      </div>      
+        <input type="search" data-testid="search-movies"
+          onChange={(e) => setSearchText(e?.target?.value)}
+          value={searchText}
+          className="form-control rounded"
+          placeholder="Search movies..."
+          aria-label="Search movies"
+          aria-describedby="search-addon"
+        />
+      </div>
     </header>
   )
 }

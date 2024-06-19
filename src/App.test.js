@@ -1,7 +1,12 @@
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from "./test/utils"
-import App from './App'
+import App from './App';
+import './test/intersectionObserverMock.mocks';
+import { mockedResults } from './test/movies.mocks';
+
+
+
 
 it('renders watch later link', () => {
   renderWithProviders(<App />)
@@ -10,7 +15,16 @@ it('renders watch later link', () => {
 })
 
 it('search for movies', async () => {
-  renderWithProviders(<App />)
+  renderWithProviders(<App />, {
+    preloadedState:
+    {
+      movies: {
+        movies: mockedResults,
+        fetchStatus: "success"
+      }
+    }
+  })
+
   await userEvent.type(screen.getByTestId('search-movies'), 'forrest gump')
   await waitFor(() => {
     expect(screen.getAllByText('Through the Eyes of Forrest Gump')[0]).toBeInTheDocument()
@@ -22,7 +36,7 @@ it('search for movies', async () => {
   })
 })
 
-it('renders watch later component', async() => {
+it('renders watch later component', async () => {
   renderWithProviders(<App />)
   const user = userEvent.setup()
   await user.click(screen.getByText(/watch later/i))
@@ -30,12 +44,12 @@ it('renders watch later component', async() => {
 })
 
 
-it('renders starred component', async() => {
+it('renders starred component', async () => {
   renderWithProviders(<App />)
   const user = userEvent.setup()
   await user.click(screen.getByTestId('nav-starred'))
   expect(screen.getByText(/There are no starred movies/i)).toBeInTheDocument()
   await waitFor(() => {
     expect(screen.getByTestId('starred')).toBeInTheDocument()
-  })  
+  })
 })
