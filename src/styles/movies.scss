@@ -176,12 +176,24 @@ img {
 }
 
 
+.card-close-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #fff;
+    z-index: 2;
+}
+
 .card {
     position: relative;
     color: #fff;
     text-align: center;
     background: transparent;
     border: none;
+
 
     &.opened {
         &+.hero-card {

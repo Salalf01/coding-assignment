@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { API_KEY, ENDPOINT } from '../constants'
 import Lightbox from './LightBox'
 import { createPortal } from 'react-dom'
+import useMediaQuery from '../hooks/useMediaQuery'
 
 const Movie = ({ movie }) => {
 
@@ -15,14 +16,21 @@ const Movie = ({ movie }) => {
     const { addToWatchLater, removeFromWatchLater } = watchLaterSlice.actions
     const [videoKey, setVideoKey] = useState('');
     const [isOpen, setOpen] = useState(false);
+    const [isCardOpen, setCardOpen] = useState(false);
     const [disableVideoButton, setDisableVideoButton] = useState(false);
+
+    const isMobile = useMediaQuery('(max-width: 500px)');
+
+
     const dispatch = useDispatch();
+
+
+
     const onClose = () => {
         setVideoKey('');
         setOpen(false);
 
     }
-
 
     const viewTrailer = async (id) => {
         if (!videoKey) setOpen(true)
@@ -64,11 +72,22 @@ const Movie = ({ movie }) => {
     const isMovieStarred = starred.starredMovies.some(item => item.id === movie.id);
     const isToWatchLater = watchLater.watchLaterMovies.some(item => item.id === movie.id);
 
+    const handleCardToggle = () => {
+        setCardOpen((prev) => !prev);
+    }
 
+    const canOpenCard = !isCardOpen && isMobile;
     return (
-        <div className="wrapper" data-testid="movie-card">
-            <div className="card" onClick={(e) => e.currentTarget.classList.add('opened')} >
+        <div className="wrapper" data-testid="movie-card" >
+            <div className={`card ${isCardOpen ? 'opened' : ''}`}
+                onClick={canOpenCard && handleCardToggle}>
                 <div className="card-body text-center">
+                    {isCardOpen && (
+
+                        <button className="card-close-btn" onClick={handleCardToggle}>
+                            <i className="bi bi-x-lg"></i>
+                        </button>
+                    )}
                     <div className="overlay" />
                     <div className="info_panel">
                         <div className="overview">{movie.overview}</div>

@@ -71,7 +71,7 @@ const Movies = ({ viewTrailer, closeCard }) => {
             if (loaderRef.current) {
                 observer.unobserve(loaderRef.current);
             }
-            
+
         };
     }, [getMovies, movies, isLoading, totalResults, items]);
 
